@@ -499,8 +499,8 @@ export default function App() {
               <h2>About Me</h2>
               {[
                 {
-                  icon: "fa-solid fa-building",
-                  text: "Software Developer @ Infiniti Infosystems",
+                  icon: "fa-solid fa-laptop-code",
+                  text: "2+ Years Experience • Freelance Full Stack Developer",
                 },
                 { icon: "fa-solid fa-graduation-cap", text: "MCA Graduate" },
                 { icon: "fa-solid fa-location-dot", text: "Pune, Maharashtra" },
@@ -518,7 +518,7 @@ export default function App() {
               ))}
               <div className="stat-grid">
                 <div className="stat-box">
-                  <div className="stat-num">2+</div>
+                  <div className="stat-num">2.7+</div>
                   <div className="stat-lbl">Years Exp.</div>
                 </div>
                 <div className="stat-box">
