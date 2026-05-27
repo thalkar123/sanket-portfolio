@@ -1,2 +1,20 @@
 # sanket-portfolio
-Professional Full Stack Java Developer Portfolio showcasing Spring Boot, Angular, React, REST APIs, ERP Systems, Billing Software, and Enterprise Application Development projects.
+Modern Full Stack Developer Portfolio built using React.
+
+Tech Stack:
+- React
+- JavaScript
+- Spring Boot
+- Angular
+- REST API
+- Microservices
+
+Features:
+- Premium UI
+- Contact Popup
+- WhatsApp Integration
+- Responsive Design
+- Professional Freelancer Portfolio
+
+Developer:
+Sanket Thalkar
