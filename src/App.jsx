@@ -33,14 +33,14 @@ const projects = [
     title: "Billing System",
     tag: "Inventory & GST",
     desc: "Multi-shop billing and inventory management with GST invoice generation, stock tracking, and real-time reporting dashboard.",
-    tech: ["Java", "Spring Boot", "MySQL", "Thymeleaf"],
+    tech: ["Java", "Spring Boot", "MySQL", "Angular"],
     icon: "🧾",
   },
   {
     title: "ERP Management",
     tag: "Enterprise",
     desc: "Full-featured ERP modules with secure REST APIs, role-based access control, and optimized backend architecture for large-scale enterprises.",
-    tech: ["Spring Boot", "Angular", "Oracle", "JWT"],
+    tech: ["Spring Boot", "Thymeleaf", "Oracle", "JWT"],
     icon: "🏢",
   },
   {
