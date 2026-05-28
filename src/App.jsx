@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-
+import profile from "./assets/sanketimg.jpeg";
 const MAIL = "thalkarsanket1428@gmail.com";
 const WA_LINK = `https://wa.me/917057528416?text=Hello%20Sanket%2C%20I%20want%20to%20discuss%20a%20project%20with%20you.`;
 const HIRE_MAIL = `mailto:${MAIL}?subject=Freelance%20Project%20Inquiry&body=Hello%20Sanket%2C%0D%0A%0D%0AI%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project%20with%20you.%0D%0A%0D%0AProject%20details%3A%0D%0A`;
@@ -1002,7 +1002,7 @@ export default function App() {
                 <div className="photo-inner">
                   {/* Replace src with: import profile from "./assets/sanketimg.jpeg"; then use src={profile} */}
                   <img
-                    src="https://placehold.co/248x248/0a0b0f/00e5ff?text=ST"
+                    src={profile}
                     alt="Sanket Thalkar"
                     style={{
                       width: "100%",
@@ -1010,6 +1010,7 @@ export default function App() {
                       objectFit: "cover",
                       objectPosition: "top",
                       borderRadius: "50%",
+                      padding: "8px",
                     }}
                   />
                 </div>
