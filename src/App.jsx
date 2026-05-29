@@ -1,10 +1,26 @@
 import { useState, useEffect, useRef } from "react";
 import profile from "./assets/sanketimg.jpeg";
+import ReactGA from "react-ga4";
+
+ReactGA.initialize("G-0K98CFT5ZZ");
+ReactGA.send({
+  hitType: "pageview",
+  page: window.location.pathname,
+});
+
+// ── GA4 Event Helper ─────────────────────────────────────────────────────────
+const track = (eventName, params = {}) => {
+  ReactGA.event(eventName, {
+    ...params,
+    timestamp: new Date().toISOString(),
+  });
+};
+
 const MAIL = "thalkarsanket1428@gmail.com";
 const WA_LINK = `https://wa.me/917057528416?text=Hello%20Sanket%2C%20I%20want%20to%20discuss%20a%20project%20with%20you.`;
 const HIRE_MAIL = `mailto:${MAIL}?subject=Freelance%20Project%20Inquiry&body=Hello%20Sanket%2C%0D%0A%0D%0AI%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project%20with%20you.%0D%0A%0D%0AProject%20details%3A%0D%0A`;
 const RESUME_LINK =
-  "https://drive.google.com/file/d/1jRAv2IiYpY88XoZyDjv2i7amwW4S72v6/view?usp=sharing"; // Replace with actual resume link
+  "https://drive.google.com/file/d/1jRAv2IiYpY88XoZyDjv2i7amwW4S72v6/view?usp=sharing";
 
 const skills = [
   { name: "Java", icon: "fa-brands fa-java" },
@@ -39,7 +55,6 @@ const projects = [
     icon: "🧾",
     demo: "https://billing-system-xz7r.onrender.com/login",
     github: "https://github.com/thalkar123",
-    // Replace with actual screenshot URL
     screenshot:
       "https://placehold.co/600x360/0c0d11/00e5ff?text=Billing+System+Screenshot",
     highlights: ["Multi-tenant", "GST Invoice", "Real-time Reports"],
@@ -159,7 +174,6 @@ function ProjectCard({ p, i }) {
         data-aos="zoom-in"
         style={{ transitionDelay: `${0.05 + i * 0.06}s` }}
       >
-        {/* Screenshot thumbnail */}
         <div
           className="proj-screenshot"
           onClick={() => setImgModal(true)}
@@ -179,7 +193,6 @@ function ProjectCard({ p, i }) {
         <h3>{p.title}</h3>
         <p>{p.desc}</p>
 
-        {/* Highlights */}
         <div className="proj-highlights">
           {p.highlights.map((h) => (
             <span className="highlight-badge" key={h}>
@@ -202,6 +215,12 @@ function ProjectCard({ p, i }) {
             className="proj-btn demo"
             target="_blank"
             rel="noreferrer"
+            onClick={() =>
+              track("project_demo_click", {
+                project_name: p.title,
+                location: "project_card",
+              })
+            }
           >
             <i
               className="fa-solid fa-arrow-up-right-from-square"
@@ -214,6 +233,12 @@ function ProjectCard({ p, i }) {
             target="_blank"
             rel="noreferrer"
             className="proj-btn gh"
+            onClick={() =>
+              track("github_click", {
+                project_name: p.title,
+                location: "project_card",
+              })
+            }
           >
             <i className="fa-brands fa-github" style={{ fontSize: 13 }}></i>
             GitHub
@@ -221,7 +246,6 @@ function ProjectCard({ p, i }) {
         </div>
       </div>
 
-      {/* Screenshot Modal */}
       {imgModal && (
         <div className="img-modal-backdrop" onClick={() => setImgModal(false)}>
           <div className="img-modal" onClick={(e) => e.stopPropagation()}>
@@ -245,6 +269,12 @@ function ProjectCard({ p, i }) {
                 className="proj-btn demo"
                 target="_blank"
                 rel="noreferrer"
+                onClick={() =>
+                  track("project_demo_click", {
+                    project_name: p.title,
+                    location: "screenshot_modal",
+                  })
+                }
               >
                 <i
                   className="fa-solid fa-arrow-up-right-from-square"
@@ -257,6 +287,12 @@ function ProjectCard({ p, i }) {
                 target="_blank"
                 rel="noreferrer"
                 className="proj-btn gh"
+                onClick={() =>
+                  track("github_click", {
+                    project_name: p.title,
+                    location: "screenshot_modal",
+                  })
+                }
               >
                 <i className="fa-brands fa-github"></i> GitHub
               </a>
@@ -278,6 +314,10 @@ export default function App() {
   useAOS();
 
   useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+  }, []);
+
+  useEffect(() => {
     function handleClick(e) {
       if (
         contactOpen &&
@@ -293,7 +333,6 @@ export default function App() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, [contactOpen]);
 
-  // Active nav highlight on scroll
   useEffect(() => {
     const sections = [
       "home",
@@ -322,6 +361,14 @@ export default function App() {
     navigator.clipboard.writeText(MAIL).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+    track("email_copy", { location: "contact_popup" });
+  };
+
+  // ── Tracked handler helpers ───────────────────────────────────────────────
+  const handleContactOpen = () => {
+    const next = !contactOpen;
+    setContactOpen(next);
+    if (next) track("contact_popup_open", { location: "hero" });
   };
 
   return (
@@ -368,7 +415,6 @@ export default function App() {
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 4px; }
 
-        /* ── AOS ── */
         [data-aos] { opacity: 0; transform: translateY(32px); transition: opacity 0.65s cubic-bezier(.16,1,.3,1), transform 0.65s cubic-bezier(.16,1,.3,1); }
         [data-aos].aos-animate { opacity: 1; transform: translateY(0); }
         [data-aos="fade-left"] { transform: translateX(-32px); }
@@ -378,7 +424,6 @@ export default function App() {
         [data-aos="zoom-in"] { transform: scale(0.90); opacity: 0; }
         [data-aos="zoom-in"].aos-animate { transform: scale(1); opacity: 1; }
 
-        /* ── NAV ── */
         nav {
           position: sticky; top: 0; z-index: 100;
           background: rgba(4,5,7,0.85);
@@ -434,11 +479,9 @@ export default function App() {
           100% { transform: scale(1.6); opacity: 0; }
         }
 
-        /* ── LAYOUT ── */
         .container { max-width: 1200px; margin: auto; padding: 0 40px; }
         section { padding: 96px 0; }
 
-        /* ── HERO ── */
         .hero-grid {
           display: grid; grid-template-columns: 1.15fr 0.85fr;
           gap: 80px; align-items: center; padding: 96px 0 80px;
@@ -472,7 +515,6 @@ export default function App() {
         }
         .domain-pill i { font-size: 11px; color: var(--muted); }
 
-        /* ── BUTTONS ── */
         .btn-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
         .btn-primary {
           display: inline-flex; align-items: center; gap: 8px;
@@ -499,7 +541,6 @@ export default function App() {
         }
         .btn-outline-green:hover { background: rgba(61,220,132,0.14); transform: translateY(-2px); box-shadow: 0 10px 32px rgba(61,220,132,0.15); }
 
-        /* ── PHOTO ── */
         .photo-wrap { position: relative; display: flex; justify-content: center; align-items: center; }
         .photo-ring {
           position: relative; width: 248px; height: 248px; border-radius: 50%;
@@ -528,7 +569,6 @@ export default function App() {
           gap: 6px; white-space: nowrap; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
         }
 
-        /* ── CONTACT POPUP ── */
         .contact-popup-wrap { position: relative; margin-top: 16px; max-width: 360px; }
         .contact-popup {
           background: var(--bg3); border: 1px solid rgba(0,229,255,0.2);
@@ -561,7 +601,6 @@ export default function App() {
         .popup-mail { display: flex; align-items: center; gap: 9px; background: var(--cyan); color: #000; text-decoration: none; padding: 11px 16px; border-radius: 10px; font-weight: 700; font-size: 14px; font-family: var(--body); transition: all .2s; }
         .popup-mail:hover { background: #33eeff; transform: translateY(-1px); }
 
-        /* ── ABOUT CARD ── */
         .about-card {
           background: var(--bg2); border: 1px solid var(--border);
           border-radius: 20px; padding: 28px; position: relative; overflow: hidden;
@@ -581,7 +620,6 @@ export default function App() {
         .stat-num { font-family: var(--display); font-size: 26px; font-weight: 700; color: var(--cyan); line-height: 1; }
         .stat-lbl { font-size: 10.5px; color: var(--muted); margin-top: 5px; text-transform: uppercase; letter-spacing: .8px; font-weight: 500; }
 
-        /* ── SECTION HEADINGS ── */
         .sec-tag {
           display: inline-block; background: var(--cyan-dim); color: var(--cyan);
           font-size: 10.5px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase;
@@ -595,7 +633,6 @@ export default function App() {
         .sec-sub { color: var(--muted2); font-size: 15.5px; max-width: 480px; margin-bottom: 48px; }
         .divider { width: 44px; height: 3px; background: linear-gradient(90deg, var(--cyan), transparent); border-radius: 2px; margin-bottom: 44px; }
 
-        /* ── SERVICES ── */
         .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
         .service-card {
           background: var(--bg2); border: 1px solid var(--border); border-radius: 18px;
@@ -606,7 +643,6 @@ export default function App() {
         .service-card h3 { font-family: var(--display); font-size: 16px; font-weight: 600; margin-bottom: 8px; letter-spacing: -.15px; }
         .service-card p { color: var(--muted); font-size: 13px; line-height: 1.75; }
 
-        /* ── SKILLS ── */
         .skills-wrap { display: flex; flex-wrap: wrap; gap: 9px; }
         .skill-pill {
           display: flex; align-items: center; gap: 7px;
@@ -617,7 +653,6 @@ export default function App() {
         .skill-pill:hover { border-color: var(--border-cyan); color: var(--cyan); background: var(--cyan-dim); transform: translateY(-2px); }
         .skill-pill i { font-size: 13px; color: var(--cyan); }
 
-        /* ── PROJECTS ── */
         .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .project-card {
           background: var(--bg2); border: 1px solid var(--border); border-radius: 20px;
@@ -670,7 +705,6 @@ export default function App() {
         .proj-btn.gh { background: transparent; border: 1px solid var(--border-hover); color: var(--muted); }
         .proj-btn.gh:hover { border-color: var(--border-cyan); color: var(--cyan); }
 
-        /* ── SCREENSHOT MODAL ── */
         .img-modal-backdrop {
           position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 1000;
           display: flex; align-items: center; justify-content: center; padding: 24px;
@@ -696,7 +730,6 @@ export default function App() {
         .modal-img { width: 100%; display: block; max-height: 480px; object-fit: contain; background: var(--bg3); }
         .modal-actions { display: flex; gap: 10px; padding: 14px 20px; border-top: 1px solid var(--border); }
 
-        /* ── EXPERIENCE ── */
         .exp-timeline { display: flex; flex-direction: column; gap: 0; position: relative; }
         .exp-timeline::before {
           content: ''; position: absolute; left: 19px; top: 24px; bottom: 24px;
@@ -728,7 +761,6 @@ export default function App() {
         .exp-points li { display: flex; align-items: flex-start; gap: 9px; font-size: 13.5px; color: var(--muted2); line-height: 1.65; }
         .exp-points li::before { content: '→'; color: var(--cyan); flex-shrink: 0; margin-top: 1px; font-size: 13px; }
 
-        /* ── RESUME SECTION ── */
         .resume-box {
           background: linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 100%);
           border: 1px solid var(--border-cyan); border-radius: 24px; overflow: hidden;
@@ -778,7 +810,6 @@ export default function App() {
         }
         .resume-view-btn:hover { border-color: var(--border-cyan); color: var(--cyan); }
 
-        /* ── CTA ── */
         .cta-box {
           background: linear-gradient(140deg, rgba(0,229,255,0.05) 0%, rgba(0,229,255,0.01) 100%);
           border: 1px solid rgba(0,229,255,0.16); border-radius: 28px;
@@ -794,7 +825,6 @@ export default function App() {
         .cta-box p { color: var(--muted2); font-size: 16.5px; max-width: 440px; margin: 0 auto 34px; }
         .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 
-        /* ── FOOTER ── */
         footer { border-top: 1px solid var(--border); padding: 44px 0; }
         .footer-inner { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
         .footer-copy { color: var(--muted); font-size: 12.5px; margin-top: 6px; }
@@ -805,7 +835,6 @@ export default function App() {
         .footer-links a:hover { color: var(--cyan); border-color: var(--border-cyan); background: var(--cyan-dim); }
         .footer-links a i { font-size: 14px; }
 
-        /* ── RESPONSIVE ── */
         @media (max-width: 900px) {
           .hero-grid { grid-template-columns: 1fr; gap: 50px; padding: 60px 0 50px; }
           h1.hero-title { font-size: 44px; }
@@ -855,6 +884,7 @@ export default function App() {
               <a
                 href={HIRE_MAIL}
                 className="nav-links a nav-cta"
+                onClick={() => track("hire_me_click", { location: "navbar" })}
                 style={{
                   background: "var(--cyan)",
                   color: "#000",
@@ -880,7 +910,6 @@ export default function App() {
           {/* Left */}
           <div data-aos="fade-right">
             <div className="hero-badge">Available for Freelance Projects</div>
-            {/* Custom Domain Display */}
             <div className="domain-pill">
               <i className="fa-solid fa-globe"></i>
               sanketthalkar.dev
@@ -898,13 +927,17 @@ export default function App() {
               React. Clean, scalable code — on time, every time.
             </p>
             <div className="btn-row">
-              <a href={HIRE_MAIL} className="btn-primary">
+              <a
+                href={HIRE_MAIL}
+                className="btn-primary"
+                onClick={() => track("hire_me_click", { location: "hero" })}
+              >
                 <i className="fa-solid fa-envelope"></i> Hire Me Now
               </a>
               <button
                 ref={toggleRef}
                 className="btn-secondary"
-                onClick={() => setContactOpen((v) => !v)}
+                onClick={handleContactOpen}
               >
                 <i className="fa-solid fa-address-card"></i> Contact Me{" "}
                 <i
@@ -916,7 +949,13 @@ export default function App() {
                   }}
                 ></i>
               </button>
-              <a href="#resume" className="btn-outline-green">
+              <a
+                href="#resume"
+                className="btn-outline-green"
+                onClick={() =>
+                  track("resume_click", { location: "hero_button" })
+                }
+              >
                 <i className="fa-solid fa-file-arrow-down"></i> Resume
               </a>
             </div>
@@ -972,6 +1011,9 @@ export default function App() {
                       target="_blank"
                       rel="noreferrer"
                       className="popup-wa"
+                      onClick={() =>
+                        track("whatsapp_click", { location: "contact_popup" })
+                      }
                     >
                       <i
                         className="fa-brands fa-whatsapp"
@@ -979,7 +1021,13 @@ export default function App() {
                       ></i>{" "}
                       Chat on WhatsApp
                     </a>
-                    <a href={HIRE_MAIL} className="popup-mail">
+                    <a
+                      href={HIRE_MAIL}
+                      className="popup-mail"
+                      onClick={() =>
+                        track("hire_me_click", { location: "contact_popup" })
+                      }
+                    >
                       <i
                         className="fa-solid fa-envelope"
                         style={{ fontSize: 15 }}
@@ -1000,7 +1048,6 @@ export default function App() {
             <div className="photo-wrap">
               <div className="photo-ring">
                 <div className="photo-inner">
-                  {/* Replace src with: import profile from "./assets/sanketimg.jpeg"; then use src={profile} */}
                   <img
                     src={profile}
                     alt="Sanket Thalkar"
@@ -1306,6 +1353,9 @@ export default function App() {
                       href={RESUME_LINK}
                       download
                       className="resume-download-btn"
+                      onClick={() =>
+                        track("resume_download", { location: "resume_section" })
+                      }
                     >
                       <i className="fa-solid fa-download"></i> Download Resume
                       (PDF)
@@ -1315,6 +1365,9 @@ export default function App() {
                       target="_blank"
                       rel="noreferrer"
                       className="resume-view-btn"
+                      onClick={() =>
+                        track("resume_preview", { location: "resume_section" })
+                      }
                     >
                       <i className="fa-solid fa-eye"></i> Preview in Browser
                     </a>
@@ -1349,6 +1402,9 @@ export default function App() {
                 href={HIRE_MAIL}
                 className="btn-primary"
                 style={{ fontSize: 15, padding: "15px 38px" }}
+                onClick={() =>
+                  track("hire_me_click", { location: "cta_section" })
+                }
               >
                 <i className="fa-solid fa-envelope"></i> Send Project Details
               </a>
@@ -1358,6 +1414,9 @@ export default function App() {
                 rel="noreferrer"
                 className="btn-secondary"
                 style={{ fontSize: 15, padding: "15px 38px" }}
+                onClick={() =>
+                  track("whatsapp_click", { location: "cta_section" })
+                }
               >
                 <i className="fa-brands fa-whatsapp"></i> WhatsApp Me
               </a>
@@ -1395,6 +1454,12 @@ export default function App() {
                 href="https://github.com/thalkar123"
                 target="_blank"
                 rel="noreferrer"
+                onClick={() =>
+                  track("github_click", {
+                    project_name: "portfolio",
+                    location: "footer",
+                  })
+                }
               >
                 <i className="fa-brands fa-github"></i> GitHub
               </a>
@@ -1402,16 +1467,30 @@ export default function App() {
                 href="https://www.linkedin.com/in/sanket-thalkar-30b531194/"
                 target="_blank"
                 rel="noreferrer"
+                onClick={() => track("linkedin_click", { location: "footer" })}
               >
                 <i className="fa-brands fa-linkedin"></i> LinkedIn
               </a>
-              <a href={RESUME_LINK} target="_blank" rel="noreferrer">
+              <a
+                href={RESUME_LINK}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => track("resume_preview", { location: "footer" })}
+              >
                 <i className="fa-solid fa-file-lines"></i> Resume
               </a>
-              <a href={HIRE_MAIL}>
+              <a
+                href={HIRE_MAIL}
+                onClick={() => track("hire_me_click", { location: "footer" })}
+              >
                 <i className="fa-solid fa-envelope"></i> Email
               </a>
-              <a href={WA_LINK} target="_blank" rel="noreferrer">
+              <a
+                href={WA_LINK}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => track("whatsapp_click", { location: "footer" })}
+              >
                 <i className="fa-brands fa-whatsapp"></i> WhatsApp
               </a>
             </div>
