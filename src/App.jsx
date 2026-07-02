@@ -1144,7 +1144,6 @@ export default function App() {
             <div className="photo-card">
               <div className="photo-frame">
                 <img src={profile} alt="Sanket Thalkar" />
-                <div className="photo-label">sanket.jpg</div>
               </div>
               <div className="photo-status">
                 <span className="avail">
