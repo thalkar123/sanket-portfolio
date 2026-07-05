@@ -20,7 +20,7 @@ const MAIL = "thalkarsanket1428@gmail.com";
 const WA_LINK = `https://wa.me/917057528416?text=Hello%20Sanket%2C%20I%20want%20to%20discuss%20a%20project%20with%20you.`;
 const CONNECT_MAIL = `mailto:${MAIL}?subject=Project%20Inquiry%20%E2%80%94%20thesanketthalkar.in&body=Hi%20Sanket%2C%0D%0A%0D%0AI%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project.%0D%0A%0D%0AProject%20details%3A%0D%0A`;
 const RESUME_LINK =
-  "https://drive.google.com/file/d/1jRAv2IiYpY88XoZyDjv2i7amwW4S72v6/view?usp=sharing";
+  "https://drive.google.com/file/d/1sOUBe35fDN-aGvTB26lqVvQ-F8raePNa/view?usp=sharing";
 const DOMAIN = "thesanketthalkar.in";
 
 // ── Content ──────────────────────────────────────────────────────────────────
